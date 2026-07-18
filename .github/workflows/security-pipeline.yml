@@ -51,3 +51,7 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/devsecops-demo:latest
           ${{ secrets.DOCKER_USERNAME }}/devsecops-demo:${{ github.sha }}
+    - name: OWASP ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.10.0
+      with:
+        target: 'https://30090-port-atqoda7ngsj66slo.labs.kodekloud.com'
