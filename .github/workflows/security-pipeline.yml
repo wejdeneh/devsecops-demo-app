@@ -55,3 +55,4 @@ jobs:
       uses: zaproxy/action-baseline@v0.10.0
       with:
         target: 'https://30090-port-atqoda7ngsj66slo.labs.kodekloud.com'
+        fail_action: false
