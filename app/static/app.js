@@ -1,4 +1,4 @@
-async function loadDashboard(){
+async function loadData(){
 
 
 const health =
@@ -6,22 +6,65 @@ await fetch("/health")
 .then(r=>r.json());
 
 
-document.getElementById(
-"health-status"
-).innerHTML =
-"ONLINE ✅";
+document.getElementById("status")
+.innerHTML =
+`
+🟢 SYSTEM OPERATIONAL
+<br>
+Version:
+${health.version}
+`;
 
 
-document.getElementById(
-"hostname"
-).innerHTML =
-health.hostname;
+
+const runtime =
+await fetch("/runtime")
+.then(r=>r.json());
 
 
-document.getElementById(
-"version"
-).innerHTML =
-health.version;
+document.getElementById("runtime")
+.innerHTML =
+`
+<p>Platform:
+<b>${runtime.platform}</b>
+</p>
+
+<p>
+Container:
+<b>${runtime.container}</b>
+</p>
+
+<p>
+Replicas:
+<b>${runtime.replicas}</b>
+</p>
+
+`;
+
+
+
+const gitops =
+await fetch("/gitops")
+.then(r=>r.json());
+
+
+document.getElementById("gitops")
+.innerHTML =
+`
+<p>
+Controller:
+<b>${gitops.controller}</b>
+</p>
+
+<p class="success">
+${gitops.sync_status}
+</p>
+
+<p class="success">
+${gitops.health_status}
+</p>
+`;
+
 
 
 
@@ -31,44 +74,67 @@ await fetch("/pipeline")
 
 
 
-let pipelineHTML="";
+document.getElementById("pipeline")
+.innerHTML =
+pipeline.stages.map(stage=>
 
 
-pipeline.stages.forEach(stage=>{
-
-
-pipelineHTML += `
-
+`
 <div class="pipeline-item">
 
 ${stage.name}
 
 <br>
 
-<strong>
-${stage.tool}
-</strong>
-
 <span class="success">
+${stage.tool}
 ✓ ${stage.status}
 </span>
 
 
 </div>
 
-`;
+`
 
-});
+).join("");
 
 
-document.getElementById(
-"pipeline"
-).innerHTML=pipelineHTML;
+
+
+const security =
+await fetch("/security")
+.then(r=>r.json());
+
+
+document.getElementById("security")
+.innerHTML =
+
+
+Object.entries(security)
+.map(
+item =>
+
+`
+<div class="pipeline-item">
+
+${item[0]}
+
+<br>
+
+<span class="success">
+${item[1]}
+</span>
+
+
+</div>
+`
+
+)
+.join("");
 
 
 
 }
 
 
-
-loadDashboard();
+loadData();

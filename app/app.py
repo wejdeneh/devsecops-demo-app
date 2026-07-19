@@ -97,6 +97,45 @@ def pipeline():
             ]
         }
     )
+
+@app.route("/runtime")
+def runtime():
+
+    return jsonify(
+        {
+            "platform": "Kubernetes",
+            "namespace": "default",
+            "deployment": "devsecops-demo",
+            "replicas": 2,
+            "status": "Running",
+            "container": "wejdenehm/devsecops-demo"
+        }
+    )
+
+
+@app.route("/gitops")
+def gitops():
+
+    return jsonify(
+        {
+            "controller": "ArgoCD",
+            "sync_status": "Synced",
+            "health_status": "Healthy",
+            "deployment": "devsecops-demo"
+        }
+    )
+
+
+@app.route("/metrics-summary")
+def metrics_summary():
+
+    return jsonify(
+        {
+            "requests": "active",
+            "monitoring": "Prometheus",
+            "metrics_endpoint": "/metrics"
+        }
+    )    
 if __name__ == "__main__":
 
     app.run(
