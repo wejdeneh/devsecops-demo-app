@@ -1,284 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DevSecOps Control Center</title>
+<title>
+Cloud Native Security Platform
+</title>
 
-<style>
-
-* {
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
-body {
-
-    margin: 0;
-    min-height: 100vh;
-
-    background:
-        linear-gradient(
-            120deg,
-            #050b18,
-            #0b1d35,
-            #06101f
-        );
-
-    color: #e5e7eb;
-    overflow-x: hidden;
-}
-
-
-/* Animated grid background */
-
-body::before {
-
-    content: "";
-
-    position: fixed;
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(59,130,246,0.08) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(59,130,246,0.08) 1px,
-            transparent 1px
-        );
-
-    background-size:
-        50px 50px;
-
-    animation: moveGrid 15s linear infinite;
-
-    z-index: -1;
-}
-
-
-@keyframes moveGrid {
-
-    from {
-        transform: translateY(0);
-    }
-
-    to {
-        transform: translateY(50px);
-    }
-
-}
-
-
-
-.container {
-
-    width: 90%;
-    max-width: 1200px;
-
-    margin: auto;
-
-    padding: 40px 0;
-
-}
-
-
-/* Header */
-
-
-.header {
-
-    border: 1px solid rgba(255,255,255,0.1);
-
-    background:
-        rgba(15,23,42,0.75);
-
-    backdrop-filter: blur(10px);
-
-    padding: 30px;
-
-    border-radius: 16px;
-
-    margin-bottom: 25px;
-
-}
-
-
-.header h1 {
-
-    margin:0;
-
-    font-size: 36px;
-
-    letter-spacing:1px;
-
-}
-
-
-.subtitle {
-
-    color:#94a3b8;
-
-    margin-top:10px;
-
-}
-
-
-.status {
-
-    margin-top:20px;
-
-    display:inline-block;
-
-    padding:8px 15px;
-
-    border-radius:20px;
-
-    background:#052e16;
-
-    color:#4ade80;
-
-    border:1px solid #166534;
-
-}
-
-
-
-/* Cards */
-
-
-.grid {
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(280px,1fr));
-
-    gap:20px;
-
-}
-
-
-
-.card {
-
-    background:
-
-    rgba(15,23,42,0.85);
-
-    border:
-
-    1px solid rgba(255,255,255,0.1);
-
-    border-radius:16px;
-
-    padding:25px;
-
-    box-shadow:
-
-    0 10px 30px rgba(0,0,0,.3);
-
-}
-
-
-.card h2 {
-
-    margin-top:0;
-
-    color:#60a5fa;
-
-}
-
-
-
-.item {
-
-    display:flex;
-
-    justify-content:space-between;
-
-    padding:10px 0;
-
-    border-bottom:
-
-    1px solid rgba(255,255,255,.05);
-
-}
-
-
-.ok {
-
-    color:#4ade80;
-
-}
-
-
-
-/* Pipeline */
-
-
-.pipeline {
-
-    margin-top:25px;
-
-}
-
-
-.pipeline-step {
-
-    padding:15px;
-
-    margin:10px auto;
-
-    max-width:500px;
-
-    text-align:center;
-
-    border-radius:10px;
-
-    background:#111827;
-
-    border:1px solid #334155;
-
-}
-
-
-.arrow {
-
-    text-align:center;
-
-    font-size:25px;
-
-    color:#60a5fa;
-
-}
-
-
-
-/* Terminal */
-
-
-.terminal {
-
-    background:#020617;
-
-    padding:20px;
-
-    border-radius:12px;
-
-    font-family:monospace;
-
-    color:#38bdf8;
-
-}
-
-
-</style>
-
+<link rel="stylesheet" href="/static/style.css">
 
 </head>
 
@@ -286,80 +15,61 @@ body::before {
 <body>
 
 
+<div class="background"></div>
+
+
 <div class="container">
 
 
-<div class="header">
+<header>
 
 <h1>
-DEVSECOPS CONTROL CENTER
+Cloud Native Security Platform
 </h1>
 
+<p>
+DevSecOps Control Center
+</p>
 
-<div class="subtitle">
-
-Cloud Native Security Platform
-
+<div id="status">
+Loading...
 </div>
 
-
-<div class="status">
-
-SYSTEM OPERATIONAL
-
-</div>
-
-
-</div>
+</header>
 
 
 
-
-<div class="grid">
+<section class="cards">
 
 
 <div class="card">
 
 <h2>
-Deployment Runtime
+Runtime
 </h2>
 
-
-<div class="item">
-<span>Platform</span>
-<span class="ok">
-Kubernetes
+<p>
+Status:
+<span id="health-status">
+-
 </span>
-</div>
+</p>
 
-
-<div class="item">
-<span>Deployment</span>
-<span class="ok">
-ArgoCD GitOps
+<p>
+Pod:
+<span id="hostname">
+-
 </span>
-</div>
+</p>
 
-
-<div class="item">
-<span>Container</span>
-<span class="ok">
-Docker
+<p>
+Version:
+<span id="version">
+-
 </span>
-</div>
-
-
-<div class="item">
-<span>Replicas</span>
-<span class="ok">
-2 / 2 Running
-</span>
-</div>
-
+</p>
 
 </div>
-
-
 
 
 
@@ -369,152 +79,24 @@ Docker
 Security Gate
 </h2>
 
-
-<div class="item">
-<span>SAST</span>
-<span class="ok">
-Semgrep PASSED
-</span>
+<div id="security">
+Loading...
 </div>
 
-
-<div class="item">
-<span>Secrets</span>
-<span class="ok">
-Gitleaks PASSED
-</span>
 </div>
-
-
-<div class="item">
-<span>Container Scan</span>
-<span class="ok">
-Trivy PASSED
-</span>
-</div>
-
-
-<div class="item">
-<span>DAST</span>
-<span class="ok">
-OWASP ZAP PASSED
-</span>
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-
 
 
 
 <div class="card pipeline">
 
-
 <h2>
-CI/CD Security Pipeline
+CI/CD Pipeline
 </h2>
 
 
-<div class="pipeline-step">
-GitHub Repository
-</div>
+<div id="pipeline">
 
-<div class="arrow">
-↓
-</div>
-
-
-<div class="pipeline-step">
-Semgrep SAST Analysis
-</div>
-
-
-<div class="arrow">
-↓
-</div>
-
-
-<div class="pipeline-step">
-Gitleaks Secret Detection
-</div>
-
-
-<div class="arrow">
-↓
-</div>
-
-
-<div class="pipeline-step">
-Trivy Container Security Scan
-</div>
-
-
-<div class="arrow">
-↓
-</div>
-
-
-<div class="pipeline-step">
-OWASP ZAP Dynamic Testing
-</div>
-
-
-<div class="arrow">
-↓
-</div>
-
-
-<div class="pipeline-step">
-Kubernetes Production Deployment
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-Runtime Console
-</h2>
-
-
-<div class="terminal">
-
-$ kubectl get pods
-
-<br><br>
-
-devsecops-demo-1&nbsp;&nbsp;&nbsp; Running
-
-<br>
-
-devsecops-demo-2&nbsp;&nbsp;&nbsp; Running
-
-<br><br>
-
-$ argocd app status devsecops-demo
-
-<br>
-
-SYNC STATUS: Synced
-
-<br>
-
-HEALTH STATUS: Healthy
-
+Loading...
 
 </div>
 
@@ -522,11 +104,14 @@ HEALTH STATUS: Healthy
 </div>
 
 
-
+</section>
 
 
 
 </div>
+
+
+<script src="/static/app.js"></script>
 
 
 </body>
