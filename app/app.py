@@ -8,7 +8,10 @@ app = Flask(__name__)
 
 
 # Security headers
-Talisman(app)
+Talisman(
+    app,
+    force_https=False
+)
 
 
 # Prometheus metrics
