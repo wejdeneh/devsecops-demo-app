@@ -68,7 +68,35 @@ def security():
     )
 
 
+@app.route("/pipeline")
+def pipeline():
 
+    return jsonify(
+        {
+            "stages": [
+                {
+                    "name": "SAST",
+                    "tool": "Semgrep",
+                    "status": "PASSED"
+                },
+                {
+                    "name": "Secrets Detection",
+                    "tool": "Gitleaks",
+                    "status": "PASSED"
+                },
+                {
+                    "name": "Container Security",
+                    "tool": "Trivy",
+                    "status": "PASSED"
+                },
+                {
+                    "name": "DAST",
+                    "tool": "OWASP ZAP",
+                    "status": "PASSED"
+                }
+            ]
+        }
+    )
 if __name__ == "__main__":
 
     app.run(
