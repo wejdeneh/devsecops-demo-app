@@ -2,31 +2,41 @@ from flask import Flask, render_template, jsonify
 from flask_talisman import Talisman
 from prometheus_flask_exporter import PrometheusMetrics
 import socket
+import os
 
 
 app = Flask(__name__)
 
 
-# Security headers
-Talisman(
-    app,
-    force_https=False
-)
+# Disable HTTPS redirect inside Kubernetes playground
+Talisman(app, force_https=False)
 
 
 # Prometheus metrics
 metrics = PrometheusMetrics(app)
 
+
+APP_VERSION = os.getenv(
+    "APP_VERSION",
+    "development"
+)
+
+
 metrics.info(
     "devsecops_app_info",
     "DevSecOps application information",
-    version="1.0"
+    version=APP_VERSION
 )
+
 
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+
+    return render_template(
+        "index.html"
+    )
+
 
 
 @app.route("/health")
@@ -35,12 +45,14 @@ def health():
     return jsonify(
         {
             "status": "healthy",
-            "application": "devsecops-demo",
+            "application": "cloud-native-security-platform",
             "environment": "kubernetes",
             "deployment": "argocd",
-            "hostname": socket.gethostname()
+            "hostname": socket.gethostname(),
+            "version": APP_VERSION
         }
     )
+
 
 
 @app.route("/security")
@@ -56,7 +68,9 @@ def security():
     )
 
 
+
 if __name__ == "__main__":
+
     app.run(
         host="0.0.0.0",
         port=5000
