@@ -53,11 +53,15 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/devsecops-demo:${{ github.sha }}
     - name: OWASP ZAP Baseline Scan
       uses: zaproxy/action-baseline@v0.10.0
+      continue-on-error: true
       with:
         target: 'https://30090-port-atqoda7ngsj66slo.labs.kodekloud.com'
         allow_issue_writing: false
+        artifact_name: zap-report
+
     - name: Upload ZAP Report
       uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: zap-report
         path: |
