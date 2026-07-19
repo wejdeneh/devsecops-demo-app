@@ -4,9 +4,15 @@ from prometheus_flask_exporter import PrometheusMetrics
 import socket
 import os
 
-
+from kubernetes import client, config
 app = Flask(__name__)
-
+try:
+    config.load_incluster_config()
+    k8s_client = client.AppsV1Api()
+    core_client = client.CoreV1Api()
+except Exception:
+    k8s_client = None
+    core_client = None
 
 # Disable HTTPS redirect inside Kubernetes playground
 Talisman(app, force_https=False)
@@ -101,18 +107,37 @@ def pipeline():
 @app.route("/runtime")
 def runtime():
 
-    return jsonify(
-        {
-            "platform": "Kubernetes",
-            "namespace": "default",
-            "deployment": "devsecops-demo",
-            "replicas": 2,
-            "status": "Running",
-            "container": "wejdenehm/devsecops-demo"
-        }
+    namespace="default"
+
+    deployment = k8s_client.read_namespaced_deployment(
+        "devsecops-demo",
+        namespace
+    )
+
+    pods = core_client.list_namespaced_pod(
+        namespace,
+        label_selector="app=devsecops-demo"
     )
 
 
+    return jsonify(
+        {
+            "platform":"Kubernetes",
+            "namespace":namespace,
+            "deployment":deployment.metadata.name,
+            "desired_replicas":
+                deployment.spec.replicas,
+            "available_replicas":
+                deployment.status.available_replicas,
+            "pods":[
+                {
+                    "name":p.metadata.name,
+                    "status":p.status.phase
+                }
+                for p in pods.items
+            ]
+        }
+    )
 @app.route("/gitops")
 def gitops():
 
