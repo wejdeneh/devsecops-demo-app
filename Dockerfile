@@ -13,9 +13,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app .
 
 
-ARG APP_VERSION=unknown
+RUN useradd -m appuser
 
-ENV APP_VERSION=$APP_VERSION
+
+USER appuser
 
 
 EXPOSE 5000
