@@ -690,14 +690,7 @@ devsecops-demo-app/
 
 
 Planned enhancements:
-
-
-- Prometheus dashboards
-- Grafana observability
-- Kubernetes Network Policies
 - Kyverno policy enforcement
-- Container image signing
-- Secrets management
 - External Secrets Operator
 - Cloud deployment
 - Argo Rollouts progressive delivery
