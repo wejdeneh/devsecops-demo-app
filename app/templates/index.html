@@ -3,115 +3,355 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>DevSecOps Control Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/static/style.css">
+<title>
+DevSecOps Control Center
+</title>
+
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
 
 </head>
 
+
 <body>
+
 
 <div class="background"></div>
 
+
+
 <div class="container">
 
-    <header>
 
-        <h1>DEVSECOPS CONTROL CENTER</h1>
+<header>
 
-        <p class="subtitle">
-            Cloud Native Security Platform
-        </p>
 
-        <div id="status">
-            Loading...
-        </div>
+<h1>
+Cloud Native Security Platform
+</h1>
 
-    </header>
 
-    <div class="cards">
+<p>
+DevSecOps Control Center
+</p>
 
-        <div class="card">
 
-            <h2>Deployment Runtime</h2>
+<div id="status">
+SYSTEM OPERATIONAL
+</div>
 
-            <div id="runtime">
-                Loading...
-            </div>
 
-        </div>
+</header>
 
-        <div class="card">
 
-            <h2>Security Posture</h2>
 
-            <div class="score">
-                96%
-            </div>
 
-            <div id="security">
-                Loading...
-            </div>
+<section class="cards">
 
-        </div>
 
-        <div class="card">
 
-            <h2>GitOps Status</h2>
+<!-- Runtime -->
 
-            <div id="gitops">
-                Loading...
-            </div>
+<div class="card">
 
-        </div>
 
-        <div class="card">
+<h2>
+Runtime Environment
+</h2>
 
-            <h2>Platform Stack</h2>
 
-            <ul>
-                <li>Kubernetes</li>
-                <li>ArgoCD</li>
-                <li>GitHub Actions</li>
-                <li>Docker</li>
-                <li>Prometheus</li>
-                <li>Semgrep</li>
-                <li>Gitleaks</li>
-                <li>Trivy</li>
-                <li>OWASP ZAP</li>
-            </ul>
+<div class="info">
 
-        </div>
+<span>
+Application
+</span>
 
-    </div>
-
-    <section class="pipeline">
-
-        <h2>CI/CD Security Pipeline</h2>
-
-        <div id="pipeline">
-            Loading...
-        </div>
-
-    </section>
-
-    <section class="activity">
-
-        <h2>Runtime Activity</h2>
-
-        <div id="activity-log">
-
-        </div>
-
-    </section>
+<strong>
+Cloud Native Security Platform
+</strong>
 
 </div>
 
-<script src="/static/app.js"></script>
+
+
+<div class="info">
+
+<span>
+Platform
+</span>
+
+<strong id="platform">
+Loading...
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Environment
+</span>
+
+<strong id="environment">
+Loading...
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Pod
+</span>
+
+<strong id="hostname">
+Loading...
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Version
+</span>
+
+<strong id="version">
+Loading...
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Replicas
+</span>
+
+<strong id="replicas">
+Loading...
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- GitOps -->
+
+
+<div class="card">
+
+
+<h2>
+GitOps Deployment
+</h2>
+
+
+
+<div class="info">
+
+<span>
+Controller
+</span>
+
+<strong>
+ArgoCD
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Sync Status
+</span>
+
+<strong id="sync"
+class="success">
+Loading...
+</strong>
+
+</div>
+
+
+
+<div class="info">
+
+<span>
+Health
+</span>
+
+<strong id="health"
+class="success">
+Loading...
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Security -->
+
+
+<div class="card">
+
+
+<h2>
+Security Gate
+</h2>
+
+
+
+<div id="pipeline">
+
+
+Loading security pipeline...
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+<section class="card pipeline-card">
+
+
+<h2>
+CI/CD Security Pipeline
+</h2>
+
+
+
+<div class="flow">
+
+
+<div>
+GitHub Repository
+</div>
+
+
+<div class="arrow">
+↓
+</div>
+
+
+<div>
+SAST Analysis
+</div>
+
+
+<div class="arrow">
+↓
+</div>
+
+
+<div>
+Secrets Detection
+</div>
+
+
+<div class="arrow">
+↓
+</div>
+
+
+<div>
+Container Security
+</div>
+
+
+<div class="arrow">
+↓
+</div>
+
+
+<div>
+DAST Validation
+</div>
+
+
+<div class="arrow">
+↓
+</div>
+
+
+<div>
+Kubernetes Deployment
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<footer>
+
+DevSecOps Platform
+|
+Kubernetes
+|
+ArgoCD
+|
+Prometheus
+
+</footer>
+
+
+
+</div>
+
+
+
+
+<script src="{{ url_for('static', filename='app.js') }}">
+</script>
+
 
 </body>
+
 
 </html>

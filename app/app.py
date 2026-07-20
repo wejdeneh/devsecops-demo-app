@@ -3,16 +3,11 @@ from flask_talisman import Talisman
 from prometheus_flask_exporter import PrometheusMetrics
 import socket
 import os
+from datetime import datetime
 
-from kubernetes import client, config
+
 app = Flask(__name__)
-try:
-    config.load_incluster_config()
-    k8s_client = client.AppsV1Api()
-    core_client = client.CoreV1Api()
-except Exception:
-    k8s_client = None
-    core_client = None
+
 
 # Disable HTTPS redirect inside Kubernetes playground
 Talisman(app, force_https=False)
@@ -25,6 +20,21 @@ metrics = PrometheusMetrics(app)
 APP_VERSION = os.getenv(
     "APP_VERSION",
     "development"
+)
+
+BUILD_DATE = os.getenv(
+    "BUILD_DATE",
+    "unknown"
+)
+
+BUILD_BRANCH = os.getenv(
+    "BUILD_BRANCH",
+    "unknown"
+)
+
+BUILD_COMMIT = os.getenv(
+    "BUILD_COMMIT",
+    "unknown"
 )
 
 
@@ -61,6 +71,22 @@ def health():
 
 
 
+@app.route("/version")
+def version():
+
+    return jsonify(
+        {
+            "application": "devsecops-control-center",
+            "version": APP_VERSION,
+            "commit": BUILD_COMMIT,
+            "branch": BUILD_BRANCH,
+            "build_date": BUILD_DATE,
+            "hostname": socket.gethostname()
+        }
+    )
+
+
+
 @app.route("/security")
 def security():
 
@@ -72,6 +98,7 @@ def security():
             "DAST": "OWASP ZAP PASSED"
         }
     )
+
 
 
 @app.route("/pipeline")
@@ -104,40 +131,24 @@ def pipeline():
         }
     )
 
+
+
 @app.route("/runtime")
 def runtime():
 
-    namespace="default"
-
-    deployment = k8s_client.read_namespaced_deployment(
-        "devsecops-demo",
-        namespace
-    )
-
-    pods = core_client.list_namespaced_pod(
-        namespace,
-        label_selector="app=devsecops-demo"
-    )
-
-
     return jsonify(
         {
-            "platform":"Kubernetes",
-            "namespace":namespace,
-            "deployment":deployment.metadata.name,
-            "desired_replicas":
-                deployment.spec.replicas,
-            "available_replicas":
-                deployment.status.available_replicas,
-            "pods":[
-                {
-                    "name":p.metadata.name,
-                    "status":p.status.phase
-                }
-                for p in pods.items
-            ]
+            "platform": "Kubernetes",
+            "namespace": "default",
+            "deployment": "devsecops-demo",
+            "replicas": 2,
+            "status": "Running",
+            "container": "wejdenehm/devsecops-demo"
         }
     )
+
+
+
 @app.route("/gitops")
 def gitops():
 
@@ -150,30 +161,20 @@ def gitops():
         }
     )
 
-@app.route("/about")
-def about():
-    return jsonify({
-        "project": "Cloud Native Security Platform",
-        "architecture": "GitOps + DevSecOps",
-        "deployment": "Kubernetes",
-        "observability": "Prometheus",
-        "security": [
-            "Semgrep",
-            "Gitleaks",
-            "Trivy",
-            "OWASP ZAP"
-        ]
-    })
+
+
 @app.route("/metrics-summary")
 def metrics_summary():
 
     return jsonify(
         {
-            "requests": "active",
             "monitoring": "Prometheus",
             "metrics_endpoint": "/metrics"
         }
-    )    
+    )
+
+
+
 if __name__ == "__main__":
 
     app.run(

@@ -4,12 +4,6 @@ FROM python:3.12-slim
 WORKDIR /app
 
 
-RUN useradd \
-    -m \
-    -u 1000 \
-    appuser
-
-
 COPY requirements.txt .
 
 
@@ -19,10 +13,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app .
 
 
-RUN chown -R appuser:appuser /app
+ARG APP_VERSION=development
+ARG BUILD_DATE=unknown
+ARG BUILD_BRANCH=unknown
+ARG BUILD_COMMIT=unknown
 
 
-USER appuser
+ENV APP_VERSION=$APP_VERSION
+ENV BUILD_DATE=$BUILD_DATE
+ENV BUILD_BRANCH=$BUILD_BRANCH
+ENV BUILD_COMMIT=$BUILD_COMMIT
 
 
 EXPOSE 5000

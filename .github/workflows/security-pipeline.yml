@@ -1,73 +1,171 @@
 name: DevSecOps Security Pipeline
 
+
 on:
+
   push:
+
     branches:
+
       - main
+
+
 
 jobs:
 
+
   security-scan:
+
 
     runs-on: ubuntu-latest
 
+
+
     steps:
+
+
 
     - name: Checkout source code
       uses: actions/checkout@v4
 
 
+
+
+
     - name: Run Semgrep SAST
       uses: semgrep/semgrep-action@v1
+
       with:
+
         config: |
           p/python
           p/owasp-top-ten
 
 
-    - name: Run Gitleaks
+
+
+
+    - name: Run Gitleaks Secret Detection
       uses: gitleaks/gitleaks-action@v2
 
 
-    - name: Run Trivy filesystem scan
+
+
+
+    - name: Run Trivy Filesystem Scan
       uses: aquasecurity/trivy-action@master
+
       with:
+
         scan-type: fs
+
         severity: CRITICAL,HIGH
 
 
+
+
+
     - name: Login to Docker Hub
+
       uses: docker/login-action@v3
+
       with:
+
         username: ${{ secrets.DOCKER_USERNAME }}
+
         password: ${{ secrets.DOCKER_PASSWORD }}
 
 
+
+
+
+
+    - name: Set build metadata
+
+      run: |
+
+        echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+
+        echo "BUILD_BRANCH=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+
+        echo "BUILD_COMMIT=${GITHUB_SHA}" >> $GITHUB_ENV
+
+
+
+
+
     - name: Build and Push Docker image
+
       uses: docker/build-push-action@v5
+
       with:
+
         context: .
+
+
         push: true
+
+
         build-args: |
+
           APP_VERSION=${{ github.sha }}
+
+          BUILD_DATE=${{ env.BUILD_DATE }}
+
+          BUILD_BRANCH=${{ env.BUILD_BRANCH }}
+
+          BUILD_COMMIT=${{ env.BUILD_COMMIT }}
+
+
         tags: |
+
           ${{ secrets.DOCKER_USERNAME }}/devsecops-demo:latest
+
           ${{ secrets.DOCKER_USERNAME }}/devsecops-demo:${{ github.sha }}
-        
+
+
+
+
+
+
+
     - name: OWASP ZAP Baseline Scan
+
       uses: zaproxy/action-baseline@v0.10.0
+
       continue-on-error: true
+
+
       with:
+
         target: 'https://30090-port-vieqypc44nz64wxl.labs.kodekloud.com'
+
         allow_issue_writing: false
+
         artifact_name: zap-report
 
+
+
+
+
+
     - name: Upload ZAP Report
+
       uses: actions/upload-artifact@v4
+
+
       if: always()
+
+
       with:
+
         name: zap-report
+
+
         path: |
+
           report_html.html
+
           report_md.md
+
           report_json.json
