@@ -150,7 +150,20 @@ def gitops():
         }
     )
 
-
+@app.route("/about")
+def about():
+    return jsonify({
+        "project": "Cloud Native Security Platform",
+        "architecture": "GitOps + DevSecOps",
+        "deployment": "Kubernetes",
+        "observability": "Prometheus",
+        "security": [
+            "Semgrep",
+            "Gitleaks",
+            "Trivy",
+            "OWASP ZAP"
+        ]
+    })
 @app.route("/metrics-summary")
 def metrics_summary():
 

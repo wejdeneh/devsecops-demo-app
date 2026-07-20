@@ -1,128 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<title>
-DevSecOps Control Center
-</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="/static/style.css">
+    <title>DevSecOps Control Center</title>
+
+    <link rel="stylesheet" href="/static/style.css">
 
 </head>
 
-
 <body>
-
 
 <div class="background"></div>
 
-
 <div class="container">
 
+    <header>
 
-<header>
+        <h1>DEVSECOPS CONTROL CENTER</h1>
 
-<h1>
-Cloud Native Security Platform
-</h1>
+        <p class="subtitle">
+            Cloud Native Security Platform
+        </p>
 
-<p>
-DevSecOps Control Center
-</p>
+        <div id="status">
+            Loading...
+        </div>
 
+    </header>
 
-<div id="status">
-Loading runtime...
-</div>
+    <div class="cards">
 
+        <div class="card">
 
-</header>
+            <h2>Deployment Runtime</h2>
 
+            <div id="runtime">
+                Loading...
+            </div>
 
+        </div>
 
-<section class="cards">
+        <div class="card">
 
+            <h2>Security Posture</h2>
 
-<div class="card">
+            <div class="score">
+                96%
+            </div>
 
-<h2>
-Runtime
-</h2>
+            <div id="security">
+                Loading...
+            </div>
 
+        </div>
 
-<div id="runtime">
-Loading...
-</div>
+        <div class="card">
 
+            <h2>GitOps Status</h2>
 
-</div>
+            <div id="gitops">
+                Loading...
+            </div>
 
+        </div>
 
+        <div class="card">
 
+            <h2>Platform Stack</h2>
 
-<div class="card">
+            <ul>
+                <li>Kubernetes</li>
+                <li>ArgoCD</li>
+                <li>GitHub Actions</li>
+                <li>Docker</li>
+                <li>Prometheus</li>
+                <li>Semgrep</li>
+                <li>Gitleaks</li>
+                <li>Trivy</li>
+                <li>OWASP ZAP</li>
+            </ul>
 
-<h2>
-GitOps
-</h2>
+        </div>
 
+    </div>
 
-<div id="gitops">
-Loading...
-</div>
+    <section class="pipeline">
 
+        <h2>CI/CD Security Pipeline</h2>
 
-</div>
+        <div id="pipeline">
+            Loading...
+        </div>
 
+    </section>
 
+    <section class="activity">
 
+        <h2>Runtime Activity</h2>
 
+        <div id="activity-log">
 
-<div class="card">
+        </div>
 
-<h2>
-Security Gate
-</h2>
-
-
-<div id="security">
-Loading...
-</div>
-
-
-</div>
-
-
-
-
-<div class="card pipeline">
-
-<h2>
-CI/CD Pipeline
-</h2>
-
-
-<div id="pipeline">
-Loading...
-</div>
-
-
-</div>
-
-
-
-</section>
-
+    </section>
 
 </div>
-
-
 
 <script src="/static/app.js"></script>
 
-
 </body>
-
 
 </html>

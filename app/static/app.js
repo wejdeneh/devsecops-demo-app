@@ -1,140 +1,137 @@
-async function loadData(){
+async function loadDashboard() {
+
+    const health =
+    await fetch("/health")
+    .then(r => r.json());
+
+    const security =
+    await fetch("/security")
+    .then(r => r.json());
+
+    const runtime =
+    await fetch("/runtime")
+    .then(r => r.json());
+
+    const gitops =
+    await fetch("/gitops")
+    .then(r => r.json());
+
+    const pipeline =
+    await fetch("/pipeline")
+    .then(r => r.json());
 
 
-const health =
-await fetch("/health")
-.then(r=>r.json());
+
+    document.getElementById("status").innerHTML =
+        "SYSTEM OPERATIONAL";
 
 
-document.getElementById("status")
-.innerHTML =
-`
-🟢 SYSTEM OPERATIONAL
-<br>
-Version:
-${health.version}
+
+    document.getElementById("runtime").innerHTML = `
+
+        <p><b>Platform:</b> ${runtime.platform}</p>
+        <p><b>Deployment:</b> ${runtime.deployment}</p>
+        <p><b>Replicas:</b> ${runtime.replicas}</p>
+        <p><b>Status:</b> ${runtime.status}</p>
+
+        <br>
+
+        <p><b>Pod:</b> ${health.hostname}</p>
+
+        <p><b>Version:</b> ${health.version}</p>
+
+    `;
+
+
+
+    document.getElementById("security").innerHTML = `
+
+        <p class="success">${security.SAST}</p>
+        <p class="success">${security.Secrets}</p>
+        <p class="success">${security.Container}</p>
+        <p class="success">${security.DAST}</p>
+
+    `;
+
+
+
+    document.getElementById("gitops").innerHTML = `
+
+        <p><b>Controller:</b> ${gitops.controller}</p>
+
+        <p><b>Sync:</b>
+        <span class="success">
+        ${gitops.sync_status}
+        </span>
+        </p>
+
+        <p><b>Health:</b>
+        <span class="success">
+        ${gitops.health_status}
+        </span>
+        </p>
+
+    `;
+
+
+
+    let pipelineHtml =
+    `<div class="pipeline-flow">`;
+
+    pipeline.stages.forEach(stage => {
+
+        pipelineHtml += `
+
+            <div class="pipeline-stage">
+
+                <b>${stage.name}</b>
+
+                <br>
+
+                ${stage.tool}
+
+                <br>
+
+                <span class="success">
+
+                ${stage.status}
+
+                </span>
+
+            </div>
+
+            <div class="arrow">→</div>
+
+        `;
+    });
+
+    pipelineHtml += `</div>`;
+
+    document.getElementById("pipeline").innerHTML =
+    pipelineHtml;
+
+
+
+    document.getElementById("activity-log").innerHTML = `
+
+[INFO] Kubernetes Deployment Healthy
+
+[INFO] ArgoCD Sync Successful
+
+[INFO] Security Gates Passed
+
+[INFO] Prometheus Metrics Active
+
+[INFO] Application Version ${health.version}
+
+[INFO] Pod ${health.hostname}
+
 `;
-
-
-
-const runtime =
-await fetch("/runtime")
-.then(r=>r.json());
-
-
-document.getElementById("runtime")
-.innerHTML =
-`
-<p>Platform:
-<b>${runtime.platform}</b>
-</p>
-
-<p>
-Container:
-<b>${runtime.container}</b>
-</p>
-
-<p>
-Replicas:
-<b>${runtime.replicas}</b>
-</p>
-
-`;
-
-
-
-const gitops =
-await fetch("/gitops")
-.then(r=>r.json());
-
-
-document.getElementById("gitops")
-.innerHTML =
-`
-<p>
-Controller:
-<b>${gitops.controller}</b>
-</p>
-
-<p class="success">
-${gitops.sync_status}
-</p>
-
-<p class="success">
-${gitops.health_status}
-</p>
-`;
-
-
-
-
-const pipeline =
-await fetch("/pipeline")
-.then(r=>r.json());
-
-
-
-document.getElementById("pipeline")
-.innerHTML =
-pipeline.stages.map(stage=>
-
-
-`
-<div class="pipeline-item">
-
-${stage.name}
-
-<br>
-
-<span class="success">
-${stage.tool}
-✓ ${stage.status}
-</span>
-
-
-</div>
-
-`
-
-).join("");
-
-
-
-
-const security =
-await fetch("/security")
-.then(r=>r.json());
-
-
-document.getElementById("security")
-.innerHTML =
-
-
-Object.entries(security)
-.map(
-item =>
-
-`
-<div class="pipeline-item">
-
-${item[0]}
-
-<br>
-
-<span class="success">
-${item[1]}
-</span>
-
-
-</div>
-`
-
-)
-.join("");
-
-
-
 }
 
+loadDashboard();
 
-loadData();
+setInterval(
+    loadDashboard,
+    10000
+);
