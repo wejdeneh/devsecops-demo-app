@@ -39,7 +39,7 @@ The goal is to demonstrate how an application moves from source code to a Kubern
 ---
 
 # Architecture
-![Pipeline](./pipeline.png)
+![Pipeline](./Pipeline.png)
 # Technology Stack
 
 
