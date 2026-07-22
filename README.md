@@ -656,7 +656,7 @@ This project demonstrates practical experience with:
 ## Wejden Haj Mefteh
 
 
-Cloud Engineering Student
+Cloud Engineering X CyberSecurity
 
 Interested in:
 
